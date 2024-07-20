@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "ES5",
+    "outDir": ".build",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "lib": [
+      "es2015"
+    ],
+    "rootDir": "./",
+    "emitDecoratorMetadata": true
+  }
+}

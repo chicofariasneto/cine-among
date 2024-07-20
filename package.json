@@ -1,0 +1,31 @@
+{
+  "name": "cine-among",
+  "version": "1.0.0",
+  "main": "",
+  "repository": "https://github.com/chicofariasneto/cine-among.git",
+  "author": "Francisco Rodrigues <chicofariasneto@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0",
+    "typeorm": "^0.3.20",
+    "typescript": "^5.5.3",
+    "uuid": "^10.0.0",
+    "winston": "^3.13.1"
+  },
+  "devDependencies": {
+    "@types/node": "20.12.7",
+    "@types/uuid": "^10.0.0",
+    "gts": "^5.3.1",
+    "typescript": "^5.4.3"
+  },
+  "scripts": {
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm.cmd run compile",
+    "pretest": "npm.cmd run compile",
+    "posttest": "npm.cmd run lint"
+  }
+}
