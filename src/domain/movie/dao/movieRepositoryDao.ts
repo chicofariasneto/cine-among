@@ -1,6 +1,8 @@
-import ContextDatabase from "../../../core/database/contextDatabase";
-import Movie from "../model/movie";
-import IMovieDao from "./movieDao";
+import { In } from "typeorm";
+
+import ContextDatabase from '../../../core/database/contextDatabase';
+import Movie from '../model/movie';
+import IMovieDao from './movieDao';
 
 export default class MovieRepositoryDao implements IMovieDao {
   constructor() {
@@ -16,5 +18,17 @@ export default class MovieRepositoryDao implements IMovieDao {
     await this.connection.open();
     await this.repository.save(movie);
     await this.connection.close();
+  }
+
+  async getMoviesIds(moviesId: Array<string>): Promise<Array<Movie>> {
+    await this.connection.open();
+    const movies = await this.repository.find({
+      select: {
+        id: true
+      },
+      id: In(moviesId),
+    });
+
+    return movies;
   }
 }

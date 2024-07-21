@@ -1,11 +1,15 @@
-import MovieService from "./movie/service/movieService";
-import MovieRepositoryDao from "./movie/dao/movieRepositoryDao";
-import GenderService from "./gender/service/genderService";
-import GenderRepositoryDao from "./gender/dao/genderRepositoryDao";
+import MovieService from './movie/service/movieService';
+import MovieRepositoryDao from './movie/dao/movieRepositoryDao';
+import TmdbService from './movie/service/tmdbService';
+import TmdbHttpDao from './movie/dao/tmdbHttpDao';
+
+import Environment from '../core/config';
+import GenreService from './genre/service/genreService';
+import GenreRepositoryDao from './genre/dao/genreRepositoryDao';
 
 class ContextDomain {
   constructor() {
-    this.instances = new Map<string, any>();
+    this.instances = new Map<string, unknown>();
   }
 
   private instances;
@@ -20,19 +24,34 @@ class ContextDomain {
     return this.instances.get('movieService');
   }
 
-  getGenderService(): GenderService {
-    if (this.instances.has('genderService')) {
-      return this.instances.get('genderService');
+  getTmdbService(): TmdbService {
+    if (this.instances.has('tmdbService')) {
+      return this.instances.get('tmdbService');
     }
 
-    const genderRepository = this.getGenderRepository();
-    this.instances.set('genderService', new GenderService(genderRepository));
-    return this.instances.get('genderService');
+    const tmdbHttp = this.getTmdbHttpDao();
+    this.instances.set('tmdbService', new TmdbService(tmdbHttp));
+    return this.instances.get('tmdbService');
   }
 
-  private getMovieRepository = (): MovieRepositoryDao => new MovieRepositoryDao();
+  getGenreService(): GenreService {
+    if (this.instances.has('genreService')) {
+      return this.instances.get('genreService');
+    }
 
-  private getGenderRepository = (): GenderRepositoryDao => new GenderRepositoryDao();
+    const genreRepository = this.getGenreRepository();
+    this.instances.set('genreService', new GenreService(genreRepository));
+    return this.instances.get('genreService');
+  }
+
+  private getMovieRepository = (): MovieRepositoryDao =>
+    new MovieRepositoryDao();
+
+  private getTmdbHttpDao = (): TmdbHttpDao =>
+    new TmdbHttpDao(Environment.tmdb.url, Environment.tmdb.token);
+
+  private getGenreRepository = (): GenreRepositoryDao =>
+    new GenreRepositoryDao();
 }
 
 const contextDomain = new ContextDomain();

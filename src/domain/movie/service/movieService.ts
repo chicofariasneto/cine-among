@@ -1,5 +1,5 @@
-import MovieRepositoryDao from "../dao/movieRepositoryDao";
-import Movie from "../model/movie";
+import MovieRepositoryDao from '../dao/movieRepositoryDao';
+import Movie from '../model/movie';
 
 export default class MovieService {
   constructor(movieRepository: MovieRepositoryDao) {
@@ -10,5 +10,9 @@ export default class MovieService {
 
   async addMovie(movie: Movie): Promise<void> {
     await this.movieRepository.addMovie(movie);
+  }
+
+  async getMoviesIdsByIds(movies: Array<string>): Promise<Array<Movie>> {
+    return await this.movieRepository.getMoviesIds(movies);
   }
 }

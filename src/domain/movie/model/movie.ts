@@ -1,26 +1,35 @@
-import {Entity, PrimaryColumn, Column, Index, ManyToOne} from "typeorm"
-import {v4 as uuid} from "uuid";
-import Gender from "../../gender/model/gender";
+import {Entity, PrimaryColumn, Column, Index} from 'typeorm';
+
+interface IMovie {
+  id: string;
+  title: string;
+  overview?: string;
+  vote_average?: string;
+}
 
 @Entity()
 export default class Movie {
-  constructor() {
-    this.id = this.id || uuid();
-  }
+  constructor() {}
 
   @PrimaryColumn()
   id: string;
 
   @Index({unique: true})
   @Column()
-  name: string;
+  title: string;
 
-  @Column()
-  year: string;
+  overview: string | undefined;
 
-  @Column()
-  trailer: string;
+  voteAverage: string | undefined;
 
-  @ManyToOne(() => Gender, (gender) => gender.movies)
-  gender: Gender
+  teaser: string;
+
+  static initialize({id, title, overview, vote_average}: IMovie): Movie {
+    const movie = new Movie();
+    movie.id = id;
+    movie.title = title;
+    movie.overview = overview;
+    movie.voteAverage = vote_average;
+    return movie;
+  }
 }

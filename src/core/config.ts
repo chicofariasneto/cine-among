@@ -1,4 +1,4 @@
-import * as dotenv from "dotenv"
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -10,13 +10,19 @@ interface Database {
 }
 
 interface Node {
-  env: string,
-  level: string
+  env: string;
+  level: string;
+}
+
+interface Tmdb {
+  url: string;
+  token: string;
 }
 
 interface IEnvironment {
-  database: Database,
-  node: Node
+  database: Database;
+  node: Node;
+  tmdb: Tmdb;
 }
 
 export default {
@@ -24,10 +30,14 @@ export default {
     host: process.env.DB_HOST,
     name: process.env.DB_NAME,
     user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD
+    password: process.env.DB_PASSWORD,
   },
   node: {
-    env: process.env.NODE_ENV || "staging",
-    level: process.env.NODE_LEVEL || "info"
-  }
-} as IEnvironment
+    env: process.env.NODE_ENV || 'staging',
+    level: process.env.NODE_LEVEL || 'info',
+  },
+  tmdb: {
+    url: process.env.TMDB_URL,
+    token: process.env.TMDB_TOKEN,
+  },
+} as IEnvironment;
