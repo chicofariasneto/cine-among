@@ -1,4 +1,5 @@
-import {Entity, PrimaryColumn, Column, Index} from "typeorm"
+import {Entity, PrimaryColumn, Column, Index, OneToMany} from 'typeorm';
+import Poll from '../../poll/model/poll';
 
 @Entity()
 export default class Genre {
@@ -11,4 +12,7 @@ export default class Genre {
 
   @Column()
   count: number;
+
+  @OneToMany(() => Poll, poll => poll.genre)
+  polls: Poll[];
 }

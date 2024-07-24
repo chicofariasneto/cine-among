@@ -1,11 +1,12 @@
+import Environment from '../core/config';
 import MovieService from './movie/service/movieService';
 import MovieRepositoryDao from './movie/dao/movieRepositoryDao';
 import TmdbService from './movie/service/tmdbService';
 import TmdbHttpDao from './movie/dao/tmdbHttpDao';
-
-import Environment from '../core/config';
 import GenreService from './genre/service/genreService';
 import GenreRepositoryDao from './genre/dao/genreRepositoryDao';
+import PollService from './poll/service/pollService';
+import PollRepositoryDao from './poll/dao/pollRepositoryDao';
 
 class ContextDomain {
   constructor() {
@@ -44,6 +45,16 @@ class ContextDomain {
     return this.instances.get('genreService');
   }
 
+  getPollService(): PollService {
+    if (this.instances.has('pollService')) {
+      return this.instances.get('pollService');
+    }
+
+    const pollRepository = this.getPollRepository();
+    this.instances.set('pollService', new PollService(pollRepository));
+    return this.instances.get('pollService');
+  }
+
   private getMovieRepository = (): MovieRepositoryDao =>
     new MovieRepositoryDao();
 
@@ -52,6 +63,8 @@ class ContextDomain {
 
   private getGenreRepository = (): GenreRepositoryDao =>
     new GenreRepositoryDao();
+
+  private getPollRepository = (): PollRepositoryDao => new PollRepositoryDao();
 }
 
 const contextDomain = new ContextDomain();

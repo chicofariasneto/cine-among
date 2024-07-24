@@ -2,9 +2,10 @@ import {DataSource} from 'typeorm';
 
 import Environment from '../config';
 import Movie from '../../domain/movie/model/movie';
-import Genre from "../../domain/genre/model/genre";
+import Genre from '../../domain/genre/model/genre';
 
-import {InsertGenres1721542032882} from "./migrations/1721542032882-insertGenres";
+import {InsertGenres1721542032882} from './migrations/1721542032882-insertGenres';
+import Poll from '../../domain/poll/model/poll';
 
 export default new DataSource({
   type: 'postgres',
@@ -16,7 +17,7 @@ export default new DataSource({
   schema: 'public',
   synchronize: true,
   logging: false,
-  entities: [Movie, Genre],
+  entities: [Movie, Genre, Poll],
   migrations: [InsertGenres1721542032882],
   subscribers: [],
 });

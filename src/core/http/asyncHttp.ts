@@ -8,7 +8,7 @@ interface Headers {
 export default class AsyncHttp {
   constructor() {
     this.httpClient = axios.create({
-      timeout: 5000,
+      timeout: 50000,
     });
   }
 

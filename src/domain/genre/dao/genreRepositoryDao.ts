@@ -33,8 +33,8 @@ export default class GenreRepositoryDao implements IGenreDao {
     await this.connection.open();
     const gender = await this.repository.find({
       order: {
-        id: 'ASC',
         count: 'ASC',
+        id: 'ASC',
       },
       take: 1,
     });

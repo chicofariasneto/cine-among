@@ -1,4 +1,4 @@
-import Genre from "../model/genre";
+import Genre from '../model/genre';
 
 export default interface IGenreDao {
   addGenre(gender: Genre): Promise<void>;

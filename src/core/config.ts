@@ -19,10 +19,16 @@ interface Tmdb {
   token: string;
 }
 
+interface Discord {
+  token: string;
+  channelId: string;
+}
+
 interface IEnvironment {
   database: Database;
   node: Node;
   tmdb: Tmdb;
+  discord: Discord;
 }
 
 export default {
@@ -39,5 +45,9 @@ export default {
   tmdb: {
     url: process.env.TMDB_URL,
     token: process.env.TMDB_TOKEN,
+  },
+  discord: {
+    token: process.env.DS_TOKEN,
+    channelId: process.env.DS_CHANNEL_ID,
   },
 } as IEnvironment;

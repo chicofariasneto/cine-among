@@ -1,4 +1,4 @@
-import { In } from "typeorm";
+import {In} from 'typeorm';
 
 import ContextDatabase from '../../../core/database/contextDatabase';
 import Movie from '../model/movie';
@@ -22,13 +22,11 @@ export default class MovieRepositoryDao implements IMovieDao {
 
   async getMoviesIds(moviesId: Array<string>): Promise<Array<Movie>> {
     await this.connection.open();
-    const movies = await this.repository.find({
+    return await this.repository.find({
       select: {
-        id: true
+        id: true,
       },
       id: In(moviesId),
     });
-
-    return movies;
   }
 }
