@@ -1,0 +1,144 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@3.1
+  serverless-framework: circleci/serverless-framework@2.0
+
+executors:
+  node:
+    docker:
+      - image: cimg/node:20.0.0
+    resource_class: small
+
+commands:
+  dependencies:
+    steps:
+      - run:
+          name: Installing node dependencies
+          command: sudo npm install
+
+  aws:
+    steps:
+      - aws-cli/setup:
+          aws-access-key-id: ACCESS_KEY
+          aws-secret-access-key: SECRET_ACCESS_KEY
+          aws-region: REGION_NAME
+
+  lint:
+    steps:
+      - run:
+          name: Running Lint Scan
+          command: npm run lint
+
+  tests:
+    steps:
+      - run:
+          name: Running Unit Tests
+          command: npm test --coverage
+
+  migrations:
+    steps:
+      - run:
+          name: Running Migrations
+          command: npm run typeorm-migrations
+
+  deploy:
+    parameters:
+      stage:
+        type: string
+    steps:
+      - serverless-framework/setup
+      - run:
+          name: Deploying application
+          command: serverless deploy --stage << parameters.stage >>
+
+jobs:
+  lint:
+    executor: node
+    steps:
+      - checkout
+      - dependencies
+      - lint
+
+  tests:
+    executor: node
+    steps:
+      - checkout
+      - dependencies
+      - tests
+
+  migrations:
+    executor: node
+    #    environment:
+    #      DB_HOST: $DB_HOST
+    #      DB_NAME: $DB_NAME
+    #      DB_USERNAME: $DB_USERNAME
+    #      DB_PASSWORD: $DB_PASSWORD
+    steps:
+      - checkout
+      - dependencies
+      - migrations
+
+  deploy:
+    executor: node
+    parameters:
+      stage:
+        type: string
+        default: dev
+    steps:
+      - checkout
+      - dependencies
+      - aws
+      - deploy:
+          stage: << parameters.stage >>
+
+workflows:
+  default:
+    jobs:
+      - lint:
+          name: Lint Scan
+          filters:
+            branches:
+              ignore: /dependabot.*/
+
+      - tests:
+          name: Unit Tests Assurance
+          filters:
+            branches:
+              ignore: /dependabot.*/
+
+      - hold:
+          type: approval
+          name: Hold for Deployment in Develop
+          requires: [ "Unit Tests Assurance", "Lint Scan" ]
+          filters:
+            branches:
+              ignore: [ "main" ]
+
+      - deploy:
+          name: Deployment in Develop
+          context: aws-shared-key
+          stage: dev
+          requires: [ "Hold for Deployment in Develop" ]
+          filters:
+            branches:
+              only: [ /feat\/.*/, /fix\/.*/ ]
+
+      - deploy:
+          name: Deployment in Production
+          context: aws-shared-key
+          stage: prd
+          requires: [ "Unit Tests Assurance", "Lint Scan" ]
+          filters:
+            branches:
+              only: [ "main" ]
+
+      - hold:
+          type: approval
+          name: Hold for Run Migrations on Production
+          requires: [ "Deployment in Production" ]
+
+      - migrations:
+          name: Run Migrations at Production
+          context: hpdb-shared-key
+          requires: [ "Hold for Run Migrations on Production" ]
