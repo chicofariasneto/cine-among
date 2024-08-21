@@ -30,9 +30,6 @@
     "clean": "gts clean",
     "compile": "tsc",
     "fix": "gts fix",
-    "prepare": "npm.cmd run compile",
-    "pretest": "npm.cmd run compile",
-    "posttest": "npm.cmd run lint",
     "typeorm": "typeorm-ts-node-commonjs",
     "typeorm-migrations": "npm run typeorm migration:run -- -d ./src/core/database/index.ts"
   }
