@@ -36,6 +36,10 @@ functions:
     events:
       - schedule: cron(0 19 * * 4)
 
+package:
+  exclude:
+    - node_modules/**
+
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
