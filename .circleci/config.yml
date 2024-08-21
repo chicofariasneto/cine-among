@@ -36,12 +36,6 @@ commands:
           name: Running Unit Tests
           command: npm test --coverage
 
-  migrations:
-    steps:
-      - run:
-          name: Running Migrations
-          command: npm run typeorm-migrations
-
   deploy:
     parameters:
       stage:
@@ -66,18 +60,6 @@ jobs:
       - checkout
       - dependencies
       - tests
-
-  migrations:
-    executor: node
-    #    environment:
-    #      DB_HOST: $DB_HOST
-    #      DB_NAME: $DB_NAME
-    #      DB_USERNAME: $DB_USERNAME
-    #      DB_PASSWORD: $DB_PASSWORD
-    steps:
-      - checkout
-      - dependencies
-      - migrations
 
   deploy:
     executor: node
@@ -107,23 +89,6 @@ workflows:
             branches:
               ignore: /dependabot.*/
 
-      - hold:
-          type: approval
-          name: Hold for Deployment in Develop
-          requires: [ "Unit Tests Assurance", "Lint Scan" ]
-          filters:
-            branches:
-              ignore: [ "main" ]
-
-      - deploy:
-          name: Deployment in Develop
-          context: aws-shared-key
-          stage: dev
-          requires: [ "Hold for Deployment in Develop" ]
-          filters:
-            branches:
-              only: [ /feat\/.*/, /fix\/.*/ ]
-
       - deploy:
           name: Deployment in Production
           context: aws-shared-key
@@ -132,13 +97,3 @@ workflows:
           filters:
             branches:
               only: [ "main" ]
-
-      - hold:
-          type: approval
-          name: Hold for Run Migrations on Production
-          requires: [ "Deployment in Production" ]
-
-      - migrations:
-          name: Run Migrations at Production
-          context: hpdb-shared-key
-          requires: [ "Hold for Run Migrations on Production" ]
