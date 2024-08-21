@@ -20,6 +20,11 @@ provider:
     DS_TOKEN: ${ssm:/cine-among/discord/token}
     DS_CHANNEL_ID: ${ssm:/cine-among/discord/channel-id}
 
+custom:
+  serverless-offline-ssm:
+    stages:
+      - offline
+
 functions:
   createPoll:
     handler: src/usecases/createPoll.handler
