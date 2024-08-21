@@ -29,12 +29,12 @@ functions:
   createPoll:
     handler: src/usecases/createPoll.handler
     events:
-      - schedule: cron(0 7 * * 4 *)
+      - schedule: cron(0 7 ? * 4 *)
 
   finishPoll:
     handler: src/usecases/finishPoll.handler
     events:
-      - schedule: cron(0 19 * * 4 *)
+      - schedule: cron(0 19 ? * 4 *)
 
 package:
   exclude:
