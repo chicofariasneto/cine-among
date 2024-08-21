@@ -1,0 +1,37 @@
+service: cine-among-app
+
+frameworkVersion: "3"
+
+provider:
+  timeout: 60
+  name: aws
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'offline'}
+  region: sa-east-1
+  environment:
+    DB_HOST: ${ssm:/cine-among/database/host}
+    DB_NAME: ${ssm:/cine-among/database/name}
+    DB_USER: ${ssm:/cine-among/database/user}
+    DB_PASSWORD: ${ssm:/cine-among/database/password}
+    NODE_ENV: ${ssm:/cine-among/node/env}
+    NODE_LEVEL: ${ssm:/cine-among/node/level}
+    TMDB_URL: ${ssm:/cine-among/tmdb/url}
+    TMDB_TOKEN: ${ssm:/cine-among/tmdb/token}
+    DS_TOKEN: ${ssm:/cine-among/discord/token}
+    DS_CHANNEL_ID: ${ssm:/cine-among/discord/channel-id}
+
+functions:
+  createPoll:
+    handler: src/usecases/createPoll.handler
+    events:
+      - schedule: cron(0 7 * * 4)
+
+  finishPoll:
+    handler: src/usecases/finishPoll.handler
+    events:
+      - schedule: cron(0 19 * * 4)
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-offline-ssm

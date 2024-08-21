@@ -1,4 +1,11 @@
-import {Entity, PrimaryColumn, Column, Index, OneToOne, JoinColumn} from 'typeorm';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  Index,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import Poll from '../../poll/model/poll';
 
 interface IMovie {
