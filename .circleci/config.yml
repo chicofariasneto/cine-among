@@ -24,6 +24,12 @@ commands:
           aws-secret-access-key: SECRET_ACCESS_KEY
           aws-region: REGION_NAME
 
+  lint:
+    steps:
+      - run:
+          name: Running Lint Scan
+          command: pnpm run lint
+
   tests:
     steps:
       - run:
@@ -41,6 +47,13 @@ commands:
           command: serverless deploy --stage << parameters.stage >>
 
 jobs:
+  lint:
+    executor: node
+    steps:
+      - checkout
+      - dependencies
+      - lint
+
   tests:
     executor: node
     steps:
@@ -64,6 +77,12 @@ jobs:
 workflows:
   default:
     jobs:
+      - lint:
+          name: Lint Scan
+          filters:
+            branches:
+              ignore: /dependabot.*/
+
       - tests:
           name: Unit Tests Assurance
           filters:
@@ -74,7 +93,7 @@ workflows:
           name: Deployment in Production
           context: aws-shared-key
           stage: prd
-          requires: [ "Unit Tests Assurance" ]
+          requires: [ "Unit Tests Assurance", "Lint Scan" ]
           filters:
             branches:
               only: [ "main" ]
