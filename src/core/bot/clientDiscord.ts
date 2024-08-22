@@ -55,26 +55,32 @@ export default class ClientDiscord {
         channel.send(message).then();
       }
 
-      channel.send({
-        poll: {
-          question: {text: question},
-          answers: answers,
-          duration: 12,
-          allowMultiselect: false,
-        },
-      }).then(async (message) => {
-        const poll = new Poll(`${message.id}`, genre);
-        await this.pollService.addPoll(poll);
-      });
+      channel
+        .send({
+          poll: {
+            question: {text: question},
+            answers: answers,
+            duration: 12,
+            allowMultiselect: false,
+          },
+        })
+        .then(async message => {
+          const poll = new Poll(`${message.id}`, genre);
+          await this.pollService.addPoll(poll);
+        });
 
-      channel.send({
-        poll: {
-          question: {text: 'Com qual áudio você gostaria de assistir o filme?'},
-          answers: [{text: 'Dublado'}, {text: 'Original'}],
-          duration: 12,
-          allowMultiselect: false,
-        },
-      }).then();
+      channel
+        .send({
+          poll: {
+            question: {
+              text: 'Com qual áudio você gostaria de assistir o filme?',
+            },
+            answers: [{text: 'Dublado'}, {text: 'Original'}],
+            duration: 12,
+            allowMultiselect: false,
+          },
+        })
+        .then();
 
       await this.client.destroy();
     });
