@@ -7,7 +7,7 @@ provider:
   name: aws
   runtime: nodejs20.x
   stage: ${opt:stage, 'offline'}
-  region: sa-east-1
+  region: us-east-1
   environment:
     DB_HOST: ${ssm:/cine-among/database/host}
     DB_NAME: ${ssm:/cine-among/database/name}
