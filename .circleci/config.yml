@@ -15,7 +15,7 @@ commands:
     steps:
       - run:
           name: Installing node dependencies
-          command: sudo pnpm install
+          command: sudo npm install
 
   aws:
     steps:
@@ -28,13 +28,13 @@ commands:
     steps:
       - run:
           name: Running Lint Scan
-          command: pnpm run lint
+          command: npm run lint
 
   tests:
     steps:
       - run:
           name: Running Unit Tests
-          command: pnpm test --coverage
+          command: npm test --coverage
 
   deploy:
     parameters:
