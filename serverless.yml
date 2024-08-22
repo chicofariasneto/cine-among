@@ -29,21 +29,26 @@ functions:
   createPoll:
     handler: src/usecases/createPoll.handler
     events:
-      - http:
-          path: /create
-          method: post
       - schedule: cron(0 7 ? * 5 *)
 
   finishPoll:
     handler: src/usecases/finishPoll.handler
     events:
-      - http:
-          path: /finish
-          method: post
       - schedule: cron(0 21 ? * 5 *)
 
 package:
-  excludeDevDependencies: true
+  patterns:
+    - '!node_modules/**'
+    - 'node_modules/axios/**'
+    - 'node_modules/discord.js/**'
+    - 'node_modules/dotenv/**'
+    - 'node_modules/pg/**'
+    - 'node_modules/typeorm/**'
+    - 'node_modules/typescript/**'
+    - 'node_modules/uuid/**'
+    - 'node_modules/winston/**'
+    - '!tests/**'
+    - 'src/**'
 
 plugins:
   - serverless-plugin-typescript
