@@ -52,5 +52,3 @@ export const handler = async (): Promise<void> => {
     throw e;
   }
 };
-
-handler().then();

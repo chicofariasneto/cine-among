@@ -122,6 +122,8 @@ export default class ClientDiscord {
         await channel.bulkDelete(fetched);
       } while (fetched.size >= 2);
 
+      await channel.send(`**Filme da Noite**: ${title}`);
+
       await this.client.destroy();
     });
   }
