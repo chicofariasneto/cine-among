@@ -28,8 +28,6 @@
     "typescript": "^5.4.3"
   },
   "scripts": {
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --coverage",
     "typeorm": "typeorm-ts-node-commonjs",
     "typeorm-migrations": "npm run typeorm migration:run -- -d ./src/core/database/index.ts"
