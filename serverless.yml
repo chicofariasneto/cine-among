@@ -38,16 +38,20 @@ functions:
 
 package:
   patterns:
-    - '!node_modules/**'
-    - 'node_modules/axios/**'
-    - 'node_modules/discord.js/**'
-    - 'node_modules/dotenv/**'
-    - 'node_modules/pg/**'
-    - 'node_modules/typeorm/**'
-    - 'node_modules/typescript/**'
-    - 'node_modules/uuid/**'
-    - 'node_modules/winston/**'
+    - '!node_modules/@types/jest/**'
+    - '!node_modules/@types/node/**'
+    - '!node_modules/@types/uuid/**'
+    - '!node_modules/gts/**'
+    - '!node_modules/jest/**'
+    - '!node_modules/serverless-offline/**'
+    - '!node_modules/serverless-offline-ssm/**'
+    - '!node_modules/serverless-plugin-typescript/**'
+    - '!node_modules/ts-jest/**'
+    - '!node_modules/ts-node/**'
+    - '!node_modules/typescript/**'
     - '!tests/**'
+    - '!.circleci/**'
+    - '!coverage'
     - 'src/**'
 
 plugins:

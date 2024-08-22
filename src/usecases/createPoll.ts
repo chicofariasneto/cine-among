@@ -1,9 +1,8 @@
 import Movie from '../domain/movie/model/movie';
-import logger from '../core/utils/logging';
 import contextDomain from '../domain/contextDomain';
 import contextClientDiscord from '../core/bot/contextClientDiscord';
-import {createMessageMovies} from '../core/utils/message';
-import {PollAnswerData} from 'discord.js';
+import { createMessageMovies } from '../core/utils/message';
+import { PollAnswerData } from 'discord.js';
 
 export const handler = async (): Promise<void> => {
   try {
@@ -19,14 +18,14 @@ export const handler = async (): Promise<void> => {
     do {
       const movies = await tmdbService.getMoviesByGenreAndPopularity(
         page,
-        genre.id
+        genre.id,
       );
       const ids = movies.map(movie => movie.id);
 
       const excludedMovies = await movieService.getMoviesIdsByIds(ids);
       const excludedIds = excludedMovies.map(movie => movie.id);
       filteredMovies = filteredMovies.concat(
-        movies.filter(movie => !excludedIds.includes(movie.id))
+        movies.filter(movie => !excludedIds.includes(movie.id)),
       );
       page++;
     } while (filteredMovies.length < 10);
@@ -39,17 +38,17 @@ export const handler = async (): Promise<void> => {
 
     const answers: Array<PollAnswerData> = [];
     for (const movie of listMovies) {
-      answers.push({text: `${movie.id} - ${movie.title}`});
+      answers.push({ text: `${movie.id} - ${movie.title}` });
     }
 
     await clientDiscord.createPoll(
       messages,
       'Qual filme você gostaria de assistir no CineAmong?',
       answers,
-      genre
+      genre,
     );
   } catch (e: unknown) {
-    logger.error(`Error ${e}`);
+    console.error(`Error ${e}`);
     throw e;
   }
 };
