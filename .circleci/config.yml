@@ -34,7 +34,7 @@ commands:
     steps:
       - run:
           name: Running Unit Tests
-          command: pnpm test --coverage
+          command: pnpm test
 
   deploy:
     parameters:
